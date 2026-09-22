@@ -1,0 +1,14 @@
+node_modules/
+backend/node_modules/
+sauvegarde1/
+project/
+.wwebjs_auth/
+backend/.wwebjs_auth/
+.wwebjs_cache/
+backend/.wwebjs_cache/
+*.sqlite
+*.sqlite-journal
+database.sqlite
+.env
+.DS_Store
+bonjour.txt

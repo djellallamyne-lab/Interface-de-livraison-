@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'Crousti — Gestion des livreurs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">
+        <img src="assets/logo-crousti.png" alt="Crousti" class="brand-logo">
+        <span class="brand-name">Crousti</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-link active">Tableau de bord</a>
+        <a href="livreurs.html" class="nav-link">Livreurs</a>
+    </div>
+    <div class="wa-wrap">
+        <button type="button" id="waStatusBadge" class="wa-badge disconnected" aria-expanded="false">WhatsApp…</button>
+        <div id="waQrPopover" class="wa-qr-popover hidden">
+            <div class="wa-qr-head">
+                <strong>Connexion WhatsApp</strong>
+                <button type="button" class="wa-qr-close" id="waQrClose" aria-label="Fermer">×</button>
+            </div>
+            <p class="wa-qr-hint" id="waQrHint">Cliquez sur « Générer le QR » pour connecter WhatsApp</p>
+            <div class="wa-qr-frame" id="waQrFrame">
+                <div class="wa-qr-loading" id="waQrLoading">En attente…</div>
+                <img id="waQrImage" class="wa-qr-image hidden" alt="QR code WhatsApp">
+            </div>
+            <p class="wa-qr-error hidden" id="waQrError"></p>
+            <button type="button" class="wa-qr-refresh" id="waQrRefresh">Générer le QR</button>
+        </div>
+    </div>
+</nav>
+
+<div class="app-container">
+
+    <aside class="left-panel">
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Vue d’ensemble</h2>
+            </div>
+
+            <div id="statsGrid" class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number accent-ok" id="statAcceptees">0</div>
+                    <div class="stat-label">Acceptées</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number accent-bad" id="statRefusees">0</div>
+                    <div class="stat-label">Refusées</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number accent-warn" id="statEnAttente">0</div>
+                    <div class="stat-label">En attente</div>
+                </div>
+                <div class="stat-box wide">
+                    <div class="stat-number accent-teal" id="statMeilleurLivreur">—</div>
+                    <div class="stat-label">Meilleur livreur</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number accent-teal" id="statTauxAcceptation">0%</div>
+                    <div class="stat-label">Taux accept.</div>
+                </div>
+            </div>
+
+            <button type="button" class="accordion-header" onclick="toggleAccordion()">
+                <span>Performance livreurs</span>
+                <span class="arrow" id="accordionArrow"></span>
+            </button>
+            <div class="accordion-content" id="accordionContent">
+                <div id="statsLivreursList">
+                    <div class="empty-message">Chargement…</div>
+                </div>
+            </div>
+        </section>
+    </aside>
+
+    <main class="center-column">
+        <header class="page-banner">
+            <div>
+                <p class="eyebrow">Crousti · Opérations</p>
+                <h1>Gestion des livreurs</h1>
+            </div>
+            <div class="stats-header">
+                <span class="chip chip-ok"><strong id="nbDisponibles">0</strong> dispo</span>
+                <span class="chip chip-muted"><strong id="nbIndisponibles">0</strong> indispo</span>
+                <span class="chip chip-warn"><strong id="nbEnAttente">0</strong> attente</span>
+                <span class="chip chip-teal"><strong id="nbEnLivraison">0</strong> en cours</span>
+            </div>
+        </header>
+
+        <div class="livreurs-row">
+            <section class="panel compact">
+                <div class="panel-head">
+                    <h2>Disponibles</h2>
+                    <span class="badge" id="dispoCount">0</span>
+                </div>
+                <div id="livreursList" class="livreurs-grid">
+                    <div class="empty-message">Chargement…</div>
+                </div>
+            </section>
+
+            <section class="panel compact">
+                <div class="panel-head">
+                    <h2>Indisponibles</h2>
+                    <span class="badge" id="indispoCount">0</span>
+                </div>
+                <div id="livreursIndisponiblesList" class="livreurs-grid">
+                    <div class="empty-message">Chargement…</div>
+                </div>
+            </section>
+        </div>
+
+        <section class="panel commandes-panel">
+            <div class="commandes-split">
+                <div class="commandes-column">
+                    <div class="panel-head">
+                        <div class="panel-head-title">
+                            <h2>En attente</h2>
+                            <span class="badge" id="attenteCount">0</span>
+                        </div>
+                        <button type="button" class="btn-assign btn-assign-header" id="btnAssignerSelection" onclick="ouvrirModalAssignation()" disabled>Assigner</button>
+                    </div>
+                    <div id="commandesList" class="commandes-list">
+                        <div class="empty-message">Chargement…</div>
+                    </div>
+                </div>
+                <div class="commandes-divider"></div>
+                <div class="commandes-column">
+                    <div class="panel-head">
+                        <h2>En livraison</h2>
+                        <span class="badge" id="livraisonCount">0</span>
+                    </div>
+                    <div id="commandesLivraisonList" class="commandes-list">
+                        <div class="empty-message">Chargement…</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Nouvelle commande</h2>
+            </div>
+            <form id="commandeForm">
+                <div class="form-row">
+                    <input type="text" id="clientNom" placeholder="Nom du client" required>
+                    <input type="text" id="clientAdresse" placeholder="Adresse" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="clientTelephone" placeholder="Téléphone (optionnel)">
+                    <input type="number" id="montant" placeholder="Montant (€)" step="0.01">
+                </div>
+                <textarea id="contenu" placeholder="Contenu de la commande" rows="2" required></textarea>
+                <button type="submit">Ajouter la commande</button>
+            </form>
+        </section>
+    </main>
+
+    <aside class="right-panel">
+        <section class="panel history-panel">
+            <div class="panel-head">
+                <h2>Activité</h2>
+                <span class="badge" id="historiqueCount">0</span>
+            </div>
+            <div id="historiqueList" class="history-scroll">
+                <div class="empty-message">Chargement…</div>
+            </div>
+        </section>
+    </aside>
+
+</div>
+
+<div id="assignModal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <h3 id="modalAssignTitle">Assigner les commandes</h3>
+        <p class="modal-commande-info" id="modalCommandeInfo"></p>
+        <label for="livreurSelect">Livreur</label>
+        <select id="livreurSelect">
+            <option value="">Sélectionner…</option>
+        </select>
+        <p class="modal-error hidden" id="modalError"></p>
+        <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="fermerModalAssignation()">Annuler</button>
+            <button type="button" class="btn-assign" onclick="confirmerAssignation()">Assigner</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

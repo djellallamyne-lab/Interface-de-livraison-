@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livreurs — Crousti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-brand">
+        <img src="assets/logo-crousti.png" alt="Crousti" class="brand-logo">
+        <span class="brand-name">Crousti</span>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-link">Tableau de bord</a>
+        <a href="livreurs.html" class="nav-link active">Livreurs</a>
+    </div>
+</nav>
+
+<div class="livreurs-page">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">Crousti · Équipe</p>
+            <h1>Livreurs & commandes</h1>
+            <p class="page-subtitle">Sélectionnez un livreur pour consulter l’historique détaillé de ses courses.</p>
+        </div>
+    </header>
+
+    <div class="livreurs-layout">
+        <section class="panel livreurs-list-card">
+            <div class="panel-head">
+                <h2>Équipe</h2>
+            </div>
+            <div id="livreursStatsList" class="livreurs-stats-list">
+                <div class="empty-message">Chargement…</div>
+            </div>
+        </section>
+
+        <section class="panel livreur-detail-card">
+            <div id="livreurDetailHeader" class="livreur-detail-header">
+                <h2>Détail livreur</h2>
+                <p class="detail-placeholder">Aucun livreur sélectionné</p>
+            </div>
+            <div id="livreurCommandesList" class="livreur-commandes-list">
+                <div class="empty-message">Choisissez un livreur dans la liste</div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="livreurs.js"></script>
+</body>
+</html>
